@@ -1,0 +1,155 @@
+Given a string s and a list of strings dictionary, 
+you need to add a closed pair of 'concat' tag <c> and </c> to wrap the substrings
+in s that exist in dictionary. If two such substrings overlap, 
+you need to wrap them together by only one pair of closed concat tag. 
+Also, if two substrings wrapped by concat tags are consecutive, you need to combine them.
+
+
+Example 1:
+
+Input=	abcxyz123
+		abc 123
+Output= <c>abc</c>xyz<c>123</c>
+
+Example 2:
+Input=	aaabbcc
+		aaa aab bc
+Output= <c>aaabbc</c>c
+
+Example 3:
+Input=	abcdef
+		ghijkl abc
+Output= <c>abc</c>def
+
+Note:
+The given dictionary won't contain duplicates, and its length won't exceed 100.
+
+
+s=input()
+l=input().split()
+p=[0]*len(s)
+for i in l:
+    if i in s:
+        a=s.index(i)
+        b=s.index(i)+len(i)-1
+        for i in range(a,b+1):
+            p[i]=1
+t=""
+i=0 
+while(i<len(p)):
+    if i<len(p) and p[i]==0:
+        while(i<len(p) and p[i]==0):
+            t+=s[i]
+            i+=1
+    if i<len(p) and p[i]==1:
+        t+="<c>"
+        while(i<len(p) and p[i]==1):
+            t+=s[i]
+            i+=1
+        t+="</c>"
+print(t)
+
+
+A group of friends went on holiday and sometimes lent each other money. 
+For example, Amith paid for Babu's lunch for Rs.10. Then later Charan gave Amith Rs.5 for a taxi ride. 
+We can model each transaction as a tuple (x, y, z) which means person x gave person y Rs.z. 
+Assuming Amith, Babu, and Charan are person 0, 1, and 2 respectively (0, 1, 2 are the person's ID), 
+the transactions can be represented as [[0, 1, 10], [2, 0, 5]].
+
+Given a list of transactions between a group of people, 
+return the minimum number of transactions required to settle the debt.
+
+Note:
+A transaction will be given as a tuple (x, y, z). Note that x ≠ y and z > 0.
+Person's IDs may not be linear, e.g. we could have the persons 0, 1, 2 or 
+we could also have the persons 0, 2, 6.
+
+
+Example 1:
+	Input=	2
+			0 1 10
+			2 0 5
+	Output= 2
+
+	Explanation:
+		Person #0 gave person #1 Rs.10.
+		Person #2 gave person #0 Rs.5.
+		Two transactions are needed. One way to settle the debt is person #1 pays person #0 and #2 Rs.5 each.
+
+Example 2:
+	Input=	4
+			0 1 10
+			1 0 1
+			1 2 5
+			2 0 5
+	Output=	1
+	Explanation:
+		Person #0 gave person #1 Rs.10.
+		Person #1 gave person #0 Rs.1.
+		Person #1 gave person #2 Rs.5.
+		Person #2 gave person #0 Rs.5.
+		Therefore, person #1 only need to give person #0 Rs.4, and all debt is settled.
+
+n=int(input())
+l=[]
+for i in range(n):
+    x=[int(i) for i in input().split()]
+    l.append(x)
+p={}
+for i in l:
+    if i[0] not in p:
+        p[i[0]]=i[-1]
+    elif i[0] in p:
+        p[i[0]]+=i[-1]
+    if i[1] not in p:
+        p[i[1]]=-i[-1]
+    elif i[1] in p:
+        p[i[1]]-=i[-1]
+c=0
+for i in p.values():
+    if i>0:
+        c+=1
+print(c)
+
+Given a list of phrases, generate a list of Join Phrases.
+
+A phrase is a string that consists of lowercase English letters and spaces only. 
+No space appears in the start or the end of a phrase. 
+There are no consecutive spaces in a phrase.
+
+Join Phrases are phrases that are formed by merging two phrases 
+where the last word of the first phrase is the same as the first word of the second phrase.
+
+Return the Join Phrases that can be formed by every two phrases
+phrases[i] and phrases[j] where i != j. Note that the order of matching two phrases matters, 
+we want to consider both orders.
+
+You should return a list of distinct strings sorted lexicographically.
+
+Example 1:
+	Input= writing code,code rocks
+	Output= [writing code rocks]
+
+Example 2:
+	Input=	road,a coffee,road map,coffee bite,coffee cup
+	Output= [a coffee bite, a coffee cup, road map]
+
+Example 3:
+Input=	a,b,a
+Output= [a]
+
+
+l=input().split(",")
+k=[]
+res=[]
+ans=set()
+for i in l:
+    k.append(i.split(" "))
+for i in range(len(k)):
+    for j in range(len(k)):
+        if i!=j:
+            if k[i][-1]==k[j][0]:
+                res.append(k[i]+k[j][1:])
+for i in res:
+    ans.add(' '.join(i))
+print(sorted(list(ans)))
